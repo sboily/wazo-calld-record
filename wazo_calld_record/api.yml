@@ -46,14 +46,14 @@ paths:
       summary: Record a channel
       description: '**Required ACL:** `calld.records.{call_uuid}.start`'
       parameters:
-        - $ref: '#/parameters/Record'
+        - $ref: '#/parameters/CallID'
       tags:
       - records
       responses:
         '204':
-          description: Member has been added to the record
+          description: Recording has been started
           schema:
-            $ref: '#/definitions/QueueAddMember'
+            $ref: '#/definitions/Record'
         '503':
           $ref: '#/responses/AnotherServiceUnavailable'
   /records/{call_id}/stop:
@@ -61,89 +61,33 @@ paths:
       summary: Stop Record a channel
       description: '**Required ACL:** `calld.records.{call_uuid}.stop`'
       parameters:
-        - $ref: '#/parameters/Record'
+        - $ref: '#/parameters/CallID'
       tags:
       - records
       responses:
         '204':
-          description: Member has been added to the record
+          description: Recording has been stopped
           schema:
             $ref: '#/definitions/Record'
         '503':
           $ref: '#/responses/AnotherServiceUnavailable'
 definitions:
-  Queue:
+  Record:
     type: object
     properties:
-      id:
+      uuid:
         description: Unique identifier of the record
         type: string
-  QueueList:
+  RecordList:
     type: object
     properties:
       items:
-        $ref: '#/definitions/Queue'
-  QueueAddMember:
-    type: object
-    properties:
-      interface:
-        description: Interface
-        type: string
-      penalty:
-        description: Penalty
-        type: integer
-      paused:
-        description: Paused
-        type: integer
-      member_name:
-        description: Member name
-        type: string
-      state_interface:
-        description: Interface state
-        type: string
-  QueueRemoveMember:
-    type: object
-    properties:
-      interface:
-        description: Interface
-        type: string
-  QueuePauseMember:
-    type: object
-    properties:
-      interface:
-        description: Interface
-        type: string
-      paused:
-        description: Paused
-        type: integer
-      reason:
-        description: Paused reason
-        type: string
+        $ref: '#/definitions/Record'
 parameters:
-  QueueName:
-    name: record_name
-    in: path
-    description: Name of the record
-    required: true
-    type: string
-  QueueAddMember:
+  Record:
     name: body
     in: body
     description: Parameters of the record member
     required: true
     schema:
-      $ref: '#/definitions/QueueAddMember'
-  QueueRemoveMember:
-    name: body
-    in: body
-    description: Parameter of member interface
-    required: true
-    schema:
-      $ref: '#/definitions/QueueRemoveMember'
-  QueuePauseMember:
-    name: body
-    in: body
-    description: Parameter of member to pause/unpause
-    required: true
-    schema:
-      $ref: '#/definitions/QueuePauseMember'
+      $ref: '#/definitions/Record'

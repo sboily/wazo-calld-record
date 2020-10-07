@@ -1,0 +1,8 @@
+name: wazo-calld-record
+namespace: sboily
+version: 0.0.1
+author: Sylvain Boily
+display_name: Calld record
+tags:
+  - recording
+homepage: https://github.com/sboily/wazo-calld-record

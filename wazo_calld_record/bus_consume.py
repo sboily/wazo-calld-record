@@ -10,7 +10,7 @@ from xivo_bus.resources.common.event import ArbitraryEvent
 logger = logging.getLogger(__name__)
 
 
-class QueuesBusEventHandler(object):
+class RecordBusEventHandler(object):
 
     def __init__(self, bus_publisher):
         self.bus_publisher = bus_publisher

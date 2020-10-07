@@ -11,7 +11,7 @@ from marshmallow.validate import Length
 from wazo_calld.plugin_helpers.mallow import StrictDict
 
 
-class QueueListSchema(Schema):
+class RecordsListSchema(Schema):
     queue = fields.Str(validate=Length(min=1))
     available = fields.Integer()
     logged_in = fields.Integer()
@@ -24,7 +24,7 @@ class QueueListSchema(Schema):
     class Meta:
         strict = True
 
-class QueueSchema(Schema):
+class RecordSchema(Schema):
     queue = fields.Str(validate=Length(min=1))
     talk_time = fields.Integer()
     hold_time = fields.Integer()
@@ -45,19 +45,5 @@ class QueueSchema(Schema):
         strict = True
 
 
-class QueueMemberSchema(Schema):
-    queue = fields.Str()
-    interface = fields.Str()
-    penalty = fields.Integer()
-    paused = fields.Integer()
-    member_name = fields.Str()
-    state_interface = fields.Str()
-    reason = fields.Str()
-
-    class Meta:
-        strict = True
-
-
-queue_list_schema = QueueListSchema()
-queue_schema = QueueSchema()
-queue_member_schema = QueueMemberSchema()
+record_list_schema = RecordsListSchema()
+record_schema = RecordSchema()

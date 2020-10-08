@@ -16,20 +16,37 @@ class RecordService(object):
         return []
 
     def start_record(self, call_id):
-        channel_name = self._get_channel_name(call_id)
+        channel = self._get_channel_name(call_id)
+        print(channel)
+        filename = 'api/{}/user/{}-{}-{}'.format(channel['tenant_uuid'], channel['user_uuid'], channel['extension'], channel['id'])
         record = {
-            'Channel': channel_name,
-            'File':  filename
+            'Channel': channel['name'],
+            'File':  filename,
+            'Format': 'wav',
+            'Mix': 1
         }
-        return self.amid.action('MixMonitor', record)
+        ami_action = self.amid.action('Monitor', record)
+        print(ami_action)
+        return ami_action
 
     def stop_record(self, call_id):
-        channel_name = self._get_channel_name(call_id)
+        channel = self._get_channel_name(call_id)
         record = {
-            'Channel': call_id
+            'Channel': channel['name']
         }
-        return self.amid.action('StopMixMonitor', record)
+        return self.amid.action('StopMonitor', record)
 
     def _get_channel_name(self, call_id):
         channel = self.ari.channels.get(channelId=call_id)
-        return channel.json['name']
+        return self._channel(channel.json)
+
+    def _channel(self, channel):
+        return {
+            'id': channel['id'],
+            'name': channel['name'],
+            'tenant_uuid': channel['channelvars']['WAZO_TENANT_UUID'],
+            'created_at': channel['creationtime'],
+            'extension': channel['channelvars']['XIVO_BASE_EXTEN'] or channel['caller']['number'],
+            'user_uuid': channel['channelvars']['XIVO_USERUUID'] or 'no_user_uuid',
+            'account_code': channel['accountcode']
+        }

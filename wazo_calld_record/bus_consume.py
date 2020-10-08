@@ -26,6 +26,7 @@ class RecordBusEventHandler(object):
             required_acl='events.record'
         )
         bus_event.routing_key = 'calls.record.start'
+        logger.info(bus_event)
         self.bus_publisher.publish(bus_event)
 
     def _monitor_stop(self, event):
@@ -34,5 +35,6 @@ class RecordBusEventHandler(object):
             body=event,
             required_acl='events.record'
         )
+        logger.info(bus_event)
         bus_event.routing_key = 'calls.record.stop'
         self.bus_publisher.publish(bus_event)
